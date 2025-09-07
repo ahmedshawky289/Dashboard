@@ -3,62 +3,282 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Freelance Dashboard — Single File</title>
+  <title>Freelance Dashboard — Black & Gold</title>
 
-  <!-- Libraries (CDN) -->
+  <!-- CDNs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
   <style>
     :root{
-      --bg:#0b0b0b;
-      --card:#0f0f0f;
-      --muted:#b8a57a;
-      --accent:#d4af37;
-      --text:#f7f5f0;
-      --glass: rgba(255,255,255,0.03);
+      --bg:#080808; --card:#0f0f0f; --muted:#bfa66a; --accent:#d4af37; --text:#f7f2ea; --glass: rgba(255,255,255,0.03);
     }
-    .light{--bg:#f7f7f7; --card:#ffffff; --muted:#555; --accent:#b8860b; --text:#111; --glass: rgba(0,0,0,0.03);}    
+    .light{--bg:#f6f6f6; --card:#ffffff; --muted:#666; --accent:#b8860b; --text:#111; --glass: rgba(0,0,0,0.04);}
     *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial; margin:0; background:var(--bg); color:var(--text);}
-    .wrap{max-width:1100px;margin:28px auto;padding:20px}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-    h1{font-size:20px;margin:0;letter-spacing:0.6px}
-    .controls{display:flex;gap:10px;align-items:center}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;background:var(--bg);color:var(--text);}
+    .container{max-width:1100px;margin:26px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    h1{font-size:20px;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
     .btn{background:transparent;border:1px solid var(--glass);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),#ffdc76);color:#000;border:none}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,0.4)}
-    .stat{font-size:28px;font-weight:700}
-    .stat small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#ffd98a);color:#000;border:none}
     nav{display:flex;gap:8px;margin-bottom:12px}
     nav button{background:transparent;border:none;color:var(--muted);padding:8px 10px;border-radius:8px;cursor:pointer}
     nav button.active{color:var(--text);background:var(--glass)}
-    main{min-height:420px}
-    .table-actions{display:flex;gap:6px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+    .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.5)}
+    .stat{font-size:28px;font-weight:700}
+    .muted{color:var(--muted)}
+
+    /* table */
+    table.dataTable thead{background:linear-gradient(90deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02))}
     .star{cursor:pointer;font-size:18px}
-    .posts-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .search{padding:8px;border-radius:8px;border:1px solid var(--glass);background:transparent;color:var(--text)}
-    .post-card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:10px}
+
+    /* posts */
+    .posts-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+    .search{padding:8px;border-radius:8px;border:1px solid var(--glass);background:transparent;color:var(--text);min-width:220px}
+
+    /* loader */
     #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));z-index:9999}
-    .lds-ring{display:inline-block;position:relative;width:80px;height:80px}
-    .lds-ring div{box-sizing:border-box;display:block;position:absolute;width:64px;height:64px;margin:8px;border:8px solid var(--accent);border-radius:50%;animation:lds-ring 1.2s cubic-bezier(.5,.2,.7,.9) infinite;border-color:var(--accent) transparent transparent transparent}
-    @keyframes lds-ring{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    @media (max-width:800px){.grid{grid-template-columns:repeat(1,1fr)}body{padding:12px}}
+    .lds-ring{display:inline-block;position:relative;width:72px;height:72px}
+    .lds-ring div{box-sizing:border-box;display:block;position:absolute;width:56px;height:56px;margin:8px;border:8px solid var(--accent);border-radius:50%;animation:lds 1.2s linear infinite;border-color:var(--accent) transparent transparent transparent}
+    @keyframes lds{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+    /* responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+    details.readme{margin-top:18px;background:var(--card);padding:12px;border-radius:10px;color:var(--muted)}
   </style>
 </head>
 <body>
   <div id="loader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
-  <div class="wrap">
-    <header><h1>Freelance Dashboard</h1></header>
-    <main><p>Demo Dashboard Project (Black & Gold theme). All features in one file.</p></main>
+
+  <div class="container animate__animated animate__fadeIn">
+    <header>
+      <div><h1>Freelance Dashboard <small style="color:var(--muted);font-size:12px;margin-left:10px">Black & Gold — Single file</small></h1></div>
+      <div class="controls">
+        <button class="btn" id="toggleTheme">Toggle Light/Dark</button>
+        <button class="btn primary" id="downloadBtn">Download HTML</button>
+      </div>
+    </header>
+
+    <nav>
+      <button class="active" data-view="dashboard">Dashboard</button>
+      <button data-view="users">Users</button>
+      <button data-view="posts">Posts</button>
+    </nav>
+
+    <main>
+      <section id="view-dashboard">
+        <div class="grid">
+          <div class="card"><div class="stat" id="stat-users">--</div><small class="muted">Users</small></div>
+          <div class="card"><div class="stat" id="stat-posts">--</div><small class="muted">Posts</small></div>
+          <div class="card"><div class="stat" id="stat-comments">--</div><small class="muted">Comments</small></div>
+        </div>
+        <div class="card"><h3 style="margin-top:0">Quick preview</h3><p class="muted" style="margin:0">Single-file deliverable using JSONPlaceholder API. Users table supports view/edit/delete and favorites stored in LocalStorage. Posts support live search + local add/edit/delete + view comments. Toastr notifications included.</p></div>
+      </section>
+
+      <section id="view-users" style="display:none">
+        <div class="card">
+          <h3 style="margin:0 0 10px 0">Users</h3>
+          <table id="usersTable" class="display" style="width:100%">
+            <thead>
+              <tr><th>Fav</th><th>ID</th><th>Name</th><th>Email</th><th>Company</th><th>Actions</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-posts" style="display:none">
+        <div class="card">
+          <div class="posts-header">
+            <input id="postSearch" class="search" placeholder="Live search posts..." />
+            <div style="display:flex;gap:8px">
+              <button class="btn primary" id="addPostBtn">Add Post</button>
+              <button class="btn" id="clearLocalPosts">Clear Local Posts</button>
+            </div>
+          </div>
+          <div id="postsList"></div>
+        </div>
+      </section>
+    </main>
+
+    <details class="readme">
+      <summary style="cursor:pointer;color:var(--accent);font-weight:700">README — How to run & Libraries</summary>
+      <div style="margin-top:8px">
+        <h4>How to run</h4>
+        <ol><li>Save/open <code>index.html</code> (already single-file).</li><li>No server required — open in browser.</li></ol>
+        <h4>Libraries (CDN)</h4>
+        <ul><li>jQuery</li><li>DataTables</li><li>Animate.css</li><li>Toastr</li></ul>
+        <h4>Features</h4>
+        <ul>
+          <li>Dashboard counts (Users / Posts / Comments)</li>
+          <li>Users DataTable: view/edit/delete + ⭐ favorites (LocalStorage)</li>
+          <li>Posts: live search, add/edit/delete locally, view comments</li>
+          <li>Toastr notifications, Loader, Light/Dark toggle, Fallback data on API error</li>
+        </ul>
+        <p class="muted">Notes: JSONPlaceholder accepts POST/PUT but doesn't persist — local posts saved in LocalStorage.</p>
+      </div>
+    </details>
   </div>
+
+  <!-- scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
   <script>
-    $(function(){ toastr.success("Dashboard Ready!") })
+    const API_USERS = 'https://jsonplaceholder.typicode.com/users';
+    const API_POSTS = 'https://jsonplaceholder.typicode.com/posts';
+    const API_COMMENTS = 'https://jsonplaceholder.typicode.com/comments?postId=';
+
+    const LOCAL_POSTS_KEY = 'local_posts_v2';
+    const FAV_KEY = 'fav_users_v2';
+
+    let users = [], posts = [], commentsCount = 0;
+    let usersTable = null;
+
+    const $loader = document.getElementById('loader');
+    function showLoader(){ $loader.style.display='flex' }
+    function hideLoader(){ $loader.style.display='none' }
+    function toastSuccess(m){ toastr.success(m) }
+    function toastInfo(m){ toastr.info(m) }
+    function toastError(m){ toastr.error(m) }
+
+    function saveFavs(obj){ localStorage.setItem(FAV_KEY, JSON.stringify(obj)) }
+    function loadFavs(){ return JSON.parse(localStorage.getItem(FAV_KEY) || '{}') }
+
+    function saveLocalPosts(){ localStorage.setItem(LOCAL_POSTS_KEY, JSON.stringify(posts.filter(p=>p._local))) }
+    function loadLocalPosts(){ return JSON.parse(localStorage.getItem(LOCAL_POSTS_KEY) || '[]') }
+
+    // escape helper
+    function escapeHtml(s){ if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+    async function fetchAll(){
+      try{
+        showLoader();
+        const timeout = new Promise((_, reject) => setTimeout(()=>reject(new Error('Timeout')), 9000));
+        const [uRes, pRes, cRes] = await Promise.race([ Promise.all([fetch(API_USERS), fetch(API_POSTS), fetch('https://jsonplaceholder.typicode.com/comments')]), timeout ]);
+
+        users = await uRes.json();
+        const remotePosts = await pRes.json();
+        const remoteComments = await cRes.json();
+        commentsCount = remoteComments.length;
+
+        // merge local posts on top (local posts have _local=true)
+        const local = loadLocalPosts().map(p=>Object.assign({_local:true}, p));
+        posts = [...local, ...remotePosts];
+
+        renderAll();
+      }catch(e){
+        toastError('Failed fetching API — using fallback data');
+        users = [{id:1,name:'Demo User',email:'demo@demo.com',company:{name:'Demo Co'}}];
+        posts = [{id:-1,userId:1,title:'Demo Post',body:'Fallback local post',_local:true}];
+        commentsCount = 1;
+        renderAll();
+      }finally{
+        hideLoader();
+      }
+    }
+
+    function renderAll(){
+      document.getElementById('stat-users').textContent = users.length;
+      document.getElementById('stat-posts').textContent = posts.length;
+      document.getElementById('stat-comments').textContent = commentsCount;
+
+      renderUsersTable();
+      renderPostsList($('#postSearch').val() || '');
+    }
+
+    function renderUsersTable(){
+      const favs = loadFavs();
+      const $tbody = $('#usersTable tbody').empty();
+      users.forEach(u=>{
+        const tr = $('<tr>')
+        const fav = favs[u.id]? '★' : '☆';
+        tr.append(`<td style="text-align:center"><span class="star" data-id="${u.id}">${fav}</span></td>`);
+        tr.append(`<td>${u.id}</td>`);
+        tr.append(`<td>${escapeHtml(u.name)}</td>`);
+        tr.append(`<td>${escapeHtml(u.email)}</td>`);
+        tr.append(`<td>${escapeHtml(u.company?.name||'')}</td>`);
+        tr.append(`<td class="table-actions"><button class="btn view" data-id="${u.id}">View</button> <button class="btn edit" data-id="${u.id}">Edit</button> <button class="btn del" data-id="${u.id}">Delete</button></td>`);
+        $tbody.append(tr);
+      });
+
+      if(!usersTable){
+        usersTable = $('#usersTable').DataTable({pageLength:6, columnDefs:[{orderable:false, targets:[0,5]}]});
+      }else{
+        usersTable.clear().destroy();
+        usersTable = $('#usersTable').DataTable({pageLength:6, columnDefs:[{orderable:false, targets:[0,5]}]});
+      }
+    }
+
+    function renderPostsList(filter=''){
+      const $c = $('#postsList').empty();
+      const f = filter.toLowerCase();
+      const filtered = posts.filter(p=> (p.title||'').toLowerCase().includes(f) || (p.body||'').toLowerCase().includes(f) );
+      if(filtered.length===0) $c.append(`<p class="muted">No posts found</p>`);
+      filtered.slice(0,100).forEach(p=>{
+        const localFlag = p._local ? '<span style="color:var(--accent);font-weight:700;margin-left:8px">LOCAL</span>' : '';
+        const card = $(`<div class="card" data-id="${p.id}"><h4>${escapeHtml(p.title)}${localFlag}</h4><p class="muted">${escapeHtml(p.body)}</p>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn viewComments" data-id="${p.id}">Comments</button>
+            <button class="btn editPost" data-id="${p.id}">Edit</button>
+            <button class="btn delPost" data-id="${p.id}">Delete</button>
+          </div>
+          <div class="comments" style="margin-top:8px;display:none"></div>
+        </div>`);
+        $c.append(card);
+      });
+    }
+
+    // events
+    $(document).ready(function(){
+      // theme
+      const saved = localStorage.getItem('theme_v2') || 'dark';
+      if(saved==='light') document.documentElement.classList.add('light');
+      $('#toggleTheme').on('click', ()=>{ document.documentElement.classList.toggle('light'); const isLight = document.documentElement.classList.contains('light'); localStorage.setItem('theme_v2', isLight?'light':'dark'); toastInfo(isLight?'Light mode':'Dark mode'); });
+
+      // nav
+      $('nav button').on('click', function(){ $('nav button').removeClass('active'); $(this).addClass('active'); const view = $(this).data('view'); $('[id^=view-]').hide(); $(`#view-${view}`).show(); });
+
+      // download
+      $('#downloadBtn').on('click', ()=>{ const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='freelance-dashboard.html'; a.click(); URL.revokeObjectURL(url); toastSuccess('Downloaded HTML'); });
+
+      // users table delegated
+      $('#usersTable tbody').on('click', '.star', function(){ const id = $(this).data('id'); const favs = loadFavs(); if(favs[id]){ delete favs[id]; $(this).text('☆'); toastInfo('Removed favorite'); } else { favs[id]=true; $(this).text('★'); toastSuccess('Marked favorite'); } saveFavs(favs); });
+
+      $('#usersTable tbody').on('click', '.view', function(){ const id = $(this).data('id'); const u = users.find(x=>x.id==id); alert(JSON.stringify(u, null, 2)); });
+
+      $('#usersTable tbody').on('click', '.edit', function(){ const id = $(this).data('id'); const u = users.find(x=>x.id==id); const newName = prompt('Edit name', u.name); if(newName){ u.name=newName; renderUsersTable(); toastSuccess('User updated'); } });
+
+      $('#usersTable tbody').on('click', '.del', function(){ const id = $(this).data('id'); if(confirm('Delete user locally?')){ users = users.filter(x=>x.id!=id); renderUsersTable(); toastSuccess('User deleted locally'); document.getElementById('stat-users').textContent = users.length; } });
+
+      // posts search live
+      $('#postSearch').on('input', function(){ renderPostsList($(this).val()) });
+
+      // add post
+      $('#addPostBtn').on('click', function(){ const title = prompt('Post title'); if(!title) return toastError('Title required'); const body = prompt('Post body') || ''; const newPost = {id: Date.now()*-1, userId:1, title, body, _local:true}; posts.unshift(newPost); saveLocalPosts(); renderPostsList($('#postSearch').val()); toastSuccess('Post added (local)'); document.getElementById('stat-posts').textContent = posts.length; });
+
+      // clear local posts
+      $('#clearLocalPosts').on('click', function(){ if(confirm('Clear local posts?')){ posts = posts.filter(p=>!p._local); saveLocalPosts(); renderPostsList($('#postSearch').val()); toastInfo('Local posts cleared'); document.getElementById('stat-posts').textContent = posts.length; } });
+
+      // posts delegated
+      $('#postsList').on('click', '.viewComments', async function(){ const id = $(this).data('id'); const $card = $(this).closest('.card'); const $c = $card.find('.comments'); if($c.is(':visible')){ $c.slideUp(); return } $c.html('<em class="muted">Loading comments...</em>').slideDown(); try{ const res = await fetch(API_COMMENTS + id); const data = await res.json(); if(!data || data.length===0) $c.html('<div class=\"muted\">No comments</div>'); else { const html = data.map(c=>`<div style=\"padding:8px;border-top:1px solid rgba(255,255,255,0.03)\"><b>${escapeHtml(c.name)}</b><div class=\"muted\">${escapeHtml(c.body)}</div></div>`).join(''); $c.html(html); } } catch(e){ $c.html('<div class=\"muted\">Failed loading comments</div>'); } });
+
+      $('#postsList').on('click', '.editPost', function(){ const id = $(this).data('id'); const p = posts.find(x=>x.id==id); const t = prompt('Edit title', p.title); if(!t) return; const b = prompt('Edit body', p.body); p.title = t; p.body = b; if(p._local) saveLocalPosts(); renderPostsList($('#postSearch').val()); toastSuccess('Post updated'); });
+
+      $('#postsList').on('click', '.delPost', function(){ const id = $(this).data('id'); if(confirm('Delete post locally?')){ posts = posts.filter(p=>p.id!=id); saveLocalPosts(); renderPostsList($('#postSearch').val()); toastSuccess('Post deleted'); document.getElementById('stat-posts').textContent = posts.length; } });
+
+      // init toastr
+      toastr.options = {positionClass:'toast-bottom-right',closeButton:true};
+
+      // start fetch
+      fetchAll();
+    });
+
   </script>
 </body>
 </html>

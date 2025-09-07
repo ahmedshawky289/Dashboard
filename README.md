@@ -1,20 +1,9 @@
-# Freelance Dashboard
+# Freelance Dashboard (Full)
 
-### How to run:
-1. Extract the ZIP.
-2. Open `index.html` in any modern browser.
+## What you get
+- `index.html` — single-file project with dashboard, users table, posts, comments, loader, light/dark mode, Toastr notifications.
+- Uses JSONPlaceholder APIs. Local posts & favorites persist in LocalStorage.
 
-### Libraries Used:
-- jQuery
-- DataTables
-- Animate.css
-- Toastr
-- JSONPlaceholder API
-
-### Features:
-- Dashboard counts (Users / Posts / Comments)
-- Users DataTable with edit/delete/favorites
-- Posts page with live search, add/edit/delete, comments view
-- Toastr notifications, Loader, Light/Dark mode
-
-Theme: **Black & Gold**
+## How to run
+1. Extract ZIP.
+2. Open `index.html` in a modern browser (no server required).
