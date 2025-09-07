@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freelance Dashboard — Single File</title>
+
+  <!-- Libraries (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --card:#0f0f0f;
+      --muted:#b8a57a;
+      --accent:#d4af37;
+      --text:#f7f5f0;
+      --glass: rgba(255,255,255,0.03);
+    }
+    .light{--bg:#f7f7f7; --card:#ffffff; --muted:#555; --accent:#b8860b; --text:#111; --glass: rgba(0,0,0,0.03);}    
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial; margin:0; background:var(--bg); color:var(--text);}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0;letter-spacing:0.6px}
+    .controls{display:flex;gap:10px;align-items:center}
+    .btn{background:transparent;border:1px solid var(--glass);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#ffdc76);color:#000;border:none}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,0.4)}
+    .stat{font-size:28px;font-weight:700}
+    .stat small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+    nav{display:flex;gap:8px;margin-bottom:12px}
+    nav button{background:transparent;border:none;color:var(--muted);padding:8px 10px;border-radius:8px;cursor:pointer}
+    nav button.active{color:var(--text);background:var(--glass)}
+    main{min-height:420px}
+    .table-actions{display:flex;gap:6px}
+    .star{cursor:pointer;font-size:18px}
+    .posts-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .search{padding:8px;border-radius:8px;border:1px solid var(--glass);background:transparent;color:var(--text)}
+    .post-card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:10px}
+    #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));z-index:9999}
+    .lds-ring{display:inline-block;position:relative;width:80px;height:80px}
+    .lds-ring div{box-sizing:border-box;display:block;position:absolute;width:64px;height:64px;margin:8px;border:8px solid var(--accent);border-radius:50%;animation:lds-ring 1.2s cubic-bezier(.5,.2,.7,.9) infinite;border-color:var(--accent) transparent transparent transparent}
+    @keyframes lds-ring{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    @media (max-width:800px){.grid{grid-template-columns:repeat(1,1fr)}body{padding:12px}}
+  </style>
+</head>
+<body>
+  <div id="loader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+  <div class="wrap">
+    <header><h1>Freelance Dashboard</h1></header>
+    <main><p>Demo Dashboard Project (Black & Gold theme). All features in one file.</p></main>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script>
+    $(function(){ toastr.success("Dashboard Ready!") })
+  </script>
+</body>
+</html>
